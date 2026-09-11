@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الكرة السحرية — اكتشف شخصيتك</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ font-family:Tahoma,Arial,sans-serif;
+ background:#080b12;
+ color:#eee;
+ min-height:100vh;
+}
+
+button,input{font:inherit}
+
+.topbar{
+ height:65px;
+ padding:0 18px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ border-bottom:1px solid #202638;
+ background:#0d111b;
+}
+
+.logo{
+ font-weight:bold;
+ color:#bda7ff;
+}
+
+.sound{
+ background:#151b29;
+ color:#ddd;
+ border:1px solid #30384d;
+ padding:8px 13px;
+ border-radius:10px;
+ cursor:pointer;
+}
+
+.screen{
+ display:none;
+ min-height:calc(100vh - 65px);
+ padding:25px 15px;
+}
+
+.screen.active{
+ display:flex;
+}
+
+.container{
+ width:100%;
+ max-width:850px;
+ margin:auto;
+}
+
+.card{
+ background:#101522;
+ border:1px solid #252d40;
+ border-radius:22px;
+ padding:28px;
+ box-shadow:0 15px 50px #0008;
+}
+
+h1{
+ margin-top:0;
+ font-size:32px;
+}
+
+.sub{
+ color:#929bb0;
+ line-height:1.8;
+}
+
+.magic{
+ width:180px;
+ height:180px;
+ margin:15px auto 25px;
+ border-radius:50%;
+ position:relative;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:
+ radial-gradient(circle at 35% 30%,
+ #fff 0 2%,
+ #cfc1ff 4%,
+ #8068db 18%,
+ #30245f 48%,
+ #100c25 75%);
+ box-shadow:
+ 0 0 25px #8068db,
+ 0 0 70px #6045bd55,
+ inset -20px -20px 35px #0008;
+}
+
+.magic:after{
+ content:"✦";
+ font-size:55px;
+ color:#fff;
+ text-shadow:0 0 20px #fff;
+}
+
+.speech{
+ background:#171e2d;
+ border:1px solid #303a52;
+ border-radius:15px;
+ padding:18px;
+ margin:20px 0;
+ line-height:1.8;
+}
+
+input{
+ width:100%;
+ padding:15px;
+ background:#0b0f18;
+ border:1px solid #30384d;
+ color:white;
+ border-radius:12px;
+ outline:none;
+ margin:10px 0 15px;
+}
+
+.btn{
+ width:100%;
+ border:0;
+ padding:15px;
+ border-radius:12px;
+ background:#7559d9;
+ color:white;
+ cursor:pointer;
+ font-weight:bold;
+ transition:.15s;
+}
+
+.btn:hover{
+ filter:brightness(1.15);
+}
+
+.btn:active{
+ transform:scale(.98);
+}
+
+.ad-slot{
+ margin:22px 0;
+ min-height:90px;
+ border:1px dashed #343c50;
+ border-radius:12px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:#626b7f;
+ font-size:12px;
+}
+
+.quiz-head{
+ display:flex;
+ justify-content:space-between;
+ color:#929bb0;
+ margin-bottom:10px;
+}
+
+.progress{
+ height:7px;
+ background:#202638;
+ border-radius:20px;
+ overflow:hidden;
+ margin-bottom:25px;
+}
+
+.progress-bar{
+ height:100%;
+ width:0%;
+ background:#8b72e8;
+ transition:.25s;
+}
+
+.question{
+ font-size:24px;
+ line-height:1.6;
+ margin:25px 0;
+}
+
+.answers{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+
+.answer{
+ padding:19px;
+ min-height:80px;
+ border:1px solid #30384d;
+ background:#151b29;
+ color:#eee;
+ border-radius:13px;
+ cursor:pointer;
+ transition:.15s;
+ line-height:1.7;
+ text-align:right;
+}
+
+.answer:hover{
+ background:#1d2536;
+ border-color:#7565a9;
+}
+
+.answer:active{
+ transform:scale(.98);
+}
+
+.result-icon{
+ font-size:65px;
+ text-align:center;
+ margin:10px;
+}
+
+.result-title{
+ text-align:center;
+ font-size:30px;
+ margin:10px 0;
+}
+
+.result-text{
+ text-align:center;
+ color:#aab2c2;
+ line-height:2;
+}
+
+.score{
+ text-align:center;
+ margin:20px 0;
+ color:#bda7ff;
+ font-size:18px;
+}
+
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#000b;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+}
+
+.modal.show{
+ display:flex;
+}
+
+.modal-box{
+ max-width:600px;
+ background:#101522;
+ border:1px solid #30384d;
+ border-radius:18px;
+ padding:25px;
+ line-height:1.9;
+}
+
+@media(max-width:600px){
+
+ .card{
+  padding:20px;
+ }
+
+ h1{
+  font-size:25px;
+ }
+
+ .magic{
+  width:145px;
+  height:145px;
+ }
+
+ .question{
+  font-size:20px;
+ }
+
+ .answers{
+  grid-template-columns:1fr;
+ }
+
+ .answer{
+  min-height:auto;
+  padding:16px;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+ <div class="logo">✦ الكرة السحرية</div>
+
+ <button class="sound" id="soundBtn">
+  🔊 الصوت
+ </button>
+</div>
+
+
+<!-- البداية -->
+
+<section class="screen active" id="start">
+
+ <div class="container">
+
+  <div class="card">
+
+   <div class="magic"></div>
+
+   <h1 style="text-align:center">
+    الكرة السحرية
+   </h1>
+
+   <div class="speech" style="text-align:center">
+
+    أهلاً بيك...<br>
+
+    جاوب على 24 سؤال، وأنا هحاول أكتشف شخصيتك.
+
+   </div>
+
+   <input
+    id="nameInput"
+    placeholder="اكتب اسمك"
+   >
+
+   <button class="btn" onclick="startGame()">
+    ابدأ الاختبار
+   </button>
+
+   <div class="ad-slot">
+    ADVERTISEMENT
+   </div>
+
+   <button
+    class="btn"
+    style="background:#202638"
+    onclick="showPrivacy()"
+   >
+    سياسة الخصوصية
+   </button>
+
+  </div>
+
+ </div>
+
+</section>
+
+
+<!-- الأسئلة -->
+
+<section class="screen" id="quiz">
+
+ <div class="container">
+
+  <div class="card">
+
+   <div class="quiz-head">
+
+    <span id="questionNumber">
+     السؤال 1 من 24
+    </span>
+
+    <span id="playerLabel"></span>
+
+   </div>
+
+   <div class="progress">
+
+    <div
+     class="progress-bar"
+     id="progressBar"
+    ></div>
+
+   </div>
+
+   <div
+    class="magic"
+    style="width:120px;height:120px;margin:15px auto"
+   ></div>
+
+   <div class="speech">
+    الكرة السحرية بتسألك...
+   </div>
+
+   <div
+    class="question"
+    id="questionText"
+   ></div>
+
+   <div
+    class="answers"
+    id="answers"
+   ></div>
+
+   <div class="ad-slot">
+    ADVERTISEMENT
+   </div>
+
+  </div>
+
+ </div>
+
+</section>
+
+
+<!-- النتيجة -->
+
+<section class="screen" id="result">
+
+ <div class="container">
+
+  <div class="card">
+
+   <div class="magic"></div>
+
+   <div
+    class="result-icon"
+    id="resultIcon"
+   >
+    ✦
+   </div>
+
+   <div
+    class="result-title"
+    id="resultTitle"
+   ></div>
+
+   <div
+    class="result-text"
+    id="resultText"
+   ></div>
+
+   <div
+    class="score"
+    id="score"
+   ></div>
+
+   <button
+    class="btn"
+    onclick="restartGame()"
+   >
+    اختبار جديد
+   </button>
+
+   <div class="ad-slot">
+    ADVERTISEMENT
+   </div>
+
+   <button
+    class="btn"
+    style="background:#202638"
+    onclick="showPrivacy()"
+   >
+    سياسة الخصوصية
+   </button>
+
+  </div>
+
+ </div>
+
+</section>
+
+
+<!-- الخصوصية -->
+
+<div
+ class="modal"
+ id="privacyModal"
+>
+
+ <div class="modal-box">
+
+  <h2>
+   سياسة الخصوصية
+  </h2>
+
+  <p>
+   الاختبار مصمم للترفيه فقط.
+   الاسم الذي تدخله يستخدم داخل الصفحة
+   لعرض النتيجة، ولا يتم إرسال إجاباتك
+   إلى خادم خارجي بواسطة هذا الموقع.
+  </p>
+
+  <button
+   class="btn"
+   onclick="closePrivacy()"
+  >
+   إغلاق
+  </button>
+
+ </div>
+
+</div>
+
+
+<script>
+
+const questions=[
+
+[
+ "لو حصلتلك مشكلة كبيرة، بتعمل اي؟",
+
+ [
+  "أفضل إني أفكر في الموضوع بهدوء قبل ما أخد أي قرار.",
+  "بدخل في المشكلة على طول وبحاول أتصرف من غير تردد.",
+  "بكلم شخص قريب مني وأسمع رأيه قبل ما أقرر.",
+  "بحاول أطلع بحل مختلف ومش تقليدي للمشكلة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "في وقت فراغك بتحب تعمل اي؟",
+
+ [
+  "بحب أقعد في مكان هادي وأعمل حاجة تخليني مرتاح.",
+  "بحب أتحرك وأجرب حاجة فيها تحدي أو حماس.",
+  "بحب أخرج وأقضي وقت مع أصحابي والناس اللي بحبهم.",
+  "بحب أجرب هواية جديدة أو أعمل حاجة مختلفة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو حد اختلف معاك في رأيه، بتعمل اي؟",
+
+ [
+  "بسمعه للآخر وبحاول أفهم وجهة نظره قبل ما أرد.",
+  "بناقشه بشكل مباشر وبوضح له وجهة نظري بصراحة.",
+  "بحاول أخلي الكلام هادي وأوصل لنقطة نتفق عليها.",
+  "بفكر في كلامه من زاوية مختلفة وأشوف ممكن يكون عنده حق في اي."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه أكتر حاجة ممكن تضايقك؟",
+
+ [
+  "إن يكون عليا ضغط كتير ومش لاقي وقت أرتاح فيه.",
+  "إن حد يظلمني أو يمنعني من إني أعمل اللي شايفه صح.",
+  "إني أحس إني لوحدي ومفيش حد أقدر أتكلم معاه.",
+  "إني أفضل أعمل نفس الحاجة كل يوم من غير أي تغيير."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو قدامك قرار مهم، بتتصرف إزاي؟",
+
+ [
+  "بفكر في كل الاحتمالات وباخد وقتي قبل ما أقرر.",
+  "بحدد اللي أنا عايزه وباخد القرار من غير تردد كبير.",
+  "بسأل شخص أو أكتر بثق في رأيهم قبل ما أختار.",
+  "بمشي مع إحساسي وبشوف أنهي اختيار حاسس إنه أنسب."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه أكتر وصف حاسس إنه شبهك؟",
+
+ [
+  "شخص هادي وبيحب يفكر كويس قبل ما يتصرف.",
+  "شخص جريء وبيحب يخوض التجارب والتحديات.",
+  "شخص اجتماعي وبيحب يكون قريب من الناس.",
+  "شخص خياله واسع وبيحب الأفكار الجديدة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو أصحابك محتاجين مساعدتك، هتعمل اي؟",
+
+ [
+  "هفكر معاهم بهدوء وأحاول أساعدهم يلاقوا الحل المناسب.",
+  "هتحرك فوراً وأحاول أعمل حاجة تساعدهم في أسرع وقت.",
+  "هفضل معاهم وأحاول أساندهم وأشجعهم.",
+  "هحاول أطلع بفكرة جديدة تساعدهم يخرجوا من المشكلة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "بتحب المنافسة والتحديات؟",
+
+ [
+  "بحبها لو كانت هادية ومش بتخليني أتوتر أو أضغط على نفسي.",
+  "بحب المنافسة جداً وبتحمس لما يكون قدامي تحدي صعب.",
+  "بحب المنافسة أكتر لما تكون مع ناس أعرفهم وأستمتع بالوقت.",
+  "بحب التحديات اللي تخليني أفكر بطريقة جديدة ومختلفة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو فشلت في حاجة كنت بتحاول تعملها، هتعمل اي؟",
+
+ [
+  "هراجع اللي حصل بهدوء وأحاول أعرف الغلط كان فين.",
+  "هحاول تاني بسرعة ومش هخلي الفشل يوقفني.",
+  "هتكلم مع شخص أثق فيه وأسمع رأيه في اللي حصل.",
+  "هغير الطريقة تماماً وأجرب أسلوب جديد."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه نوع المكان اللي بتحس فيه براحة أكتر؟",
+
+ [
+  "مكان هادي أقدر أقعد فيه من غير دوشة أو ضغط.",
+  "مكان فيه حركة ونشاط وحاجات كتير بتحصل.",
+  "مكان مليان ناس أقدر أتكلم معاهم وأقضي وقت معاهم.",
+  "مكان مختلف ومميز يخليني أحس إني في تجربة جديدة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لما بتحس إنك متوتر، بتعمل اي؟",
+
+ [
+  "ببعد شوية عن أي ضغط وبدي نفسي وقت أهدى.",
+  "بحاول أواجه السبب اللي موترني وأحل الموضوع.",
+  "بكلم شخص قريب مني عشان أتكلم وأخرج اللي جوايا.",
+  "بشغل نفسي بحاجة بحبها عشان أغير تفكيري."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "بتحب تخطط لكل حاجة قبل ما تبدأ؟",
+
+ [
+  "أيوه، بحب أعرف أنا هعمل اي وأمشي خطوة خطوة.",
+  "مش دايماً، ساعات ببدأ على طول وأتصرف في الطريق.",
+  "بحب أخطط مع الناس اللي هشاركهم الحاجة.",
+  "بفضل أسيب مساحة للارتجال وأشوف الأفكار هتوديني لفين."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو عندك يوم كامل فاضي، هتقضيه إزاي؟",
+
+ [
+  "هستغل اليوم في الراحة أو أعمل حاجة هادية بحبها.",
+  "هخرج وأتحرك وأجرب حاجة مش بعملها كل يوم.",
+  "هقابل أصحابي ونقضي اليوم سوا.",
+  "هعمل مشروع أو أجرب فكرة جديدة في دماغي."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه أهم حاجة بالنسبالك؟",
+
+ [
+  "إني أعيش حياة مستقرة وأكون مرتاح نفسياً.",
+  "إني أكون حر وأقدر أخد قراراتي بنفسي.",
+  "إني أحافظ على الناس المهمة في حياتي.",
+  "إني أكون قادر أفكر وأعمل حاجات مختلفة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو شفت حد بيتعرض للظلم، هتعمل اي؟",
+
+ [
+  "هفكر الأول في أفضل طريقة أقدر أساعد بيها.",
+  "هتدخل وأحاول أوقف الظلم لو أقدر أعمل كده بأمان.",
+  "هطلب مساعدة من شخص يقدر يتصرف في الموقف.",
+  "هحاول ألاقي طريقة ذكية تساعد الشخص من غير ما أكبر المشكلة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "بتتعلم حاجة جديدة إزاي؟",
+
+ [
+  "بحب أتعلم بهدوء وأفهم كل خطوة قبل اللي بعدها.",
+  "بحب أجرب بنفسي وأتعلم من الأخطاء اللي بتحصل.",
+  "بحب أتعلم مع شخص تاني ونتناقش في اللي بنتعلمه.",
+  "بحب أجرب أكتر من طريقة لحد ما ألاقي الطريقة اللي تناسبني."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه أكتر حاجة بتشد انتباهك؟",
+
+ [
+  "التفاصيل الصغيرة اللي معظم الناس ممكن ما تاخدش بالها منها.",
+  "الحاجات اللي فيها حركة وتحدي وتجربة جديدة.",
+  "طريقة تعامل الناس مع بعض وتصرفاتهم المختلفة.",
+  "الأفكار الغريبة والجديدة اللي محدش فكر فيها قبل كده."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو حد انتقدك، بتتصرف إزاي؟",
+
+ [
+  "بسمع كلامه وبفكر بهدوء إذا كان عنده نقطة صح.",
+  "برد عليه بشكل مباشر وبوضح له وجهة نظري.",
+  "بسأله أكتر عشان أفهم هو شايف المشكلة فين.",
+  "بحاول أبص للموضوع من زاوية مختلفة وأتعلم منه."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه أقرب حاجة لشخصيتك؟",
+
+ [
+  "بحب الهدوء والتفكير ومش بستعجل في قراراتي.",
+  "بحب التحدي والحركة ومش بخاف أجرب حاجة جديدة.",
+  "بحب الصحاب والكلام والتعامل مع الناس.",
+  "بحب الخيال والأفكار المختلفة والحاجات غير التقليدية."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لو جاتلك فرصة جديدة، هتعمل اي؟",
+
+ [
+  "هدرسها كويس الأول وأشوف إذا كانت مناسبة ليا.",
+  "هجربها على طول لو حسيت إنها تستاهل.",
+  "هسأل ناس أثق فيهم عن رأيهم فيها.",
+  "هتحمس للفكرة وأفكر إزاي أستفيد منها بطريقة مختلفة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "بتحب تكون فين وسط مجموعة من الناس؟",
+
+ [
+  "بحب أكون هادي وعلى جنب وأشارك لما يكون عندي حاجة أقولها.",
+  "بحب أكون في المقدمة وأشارك في اللي بيحصل.",
+  "بحب أكون وسط المجموعة وأتكلم مع الكل.",
+  "مكاني بيتغير حسب الموقف والناس اللي موجودة."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "لما يكون عندك هدف مهم، بتعمل اي؟",
+
+ [
+  "بحط خطة واضحة وأمشي ناحية الهدف خطوة بخطوة.",
+  "ببدأ فوراً وبحاول أحقق الهدف من غير ما أضيع وقت.",
+  "بشارك شخص قريب مني وأخليه جزء من الرحلة.",
+  "بفكر في طريقة مختلفة تساعدني أوصل للهدف."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "إيه أكتر حاجة بتديك حماس؟",
+
+ [
+  "إني أحس إن حياتي مستقرة وكل حاجة ماشية بشكل مريح.",
+  "إني أحقق حاجة صعبة وأثبت لنفسي إني أقدر عليها.",
+  "إني أقضي وقت حلو مع الناس اللي بحبهم.",
+  "إني أطلع بفكرة جديدة وأحولها لحاجة حقيقية."
+ ],
+
+ ["calm","bold","social","creative"]
+],
+
+
+[
+ "وأخيراً، شايف نفسك إزاي؟",
+
+ [
+  "شايف نفسي شخص هادي ومتزن وبفكر قبل ما أخد قراراتي.",
+  "شايف نفسي شخص جريء وبحب التحديات ومش بخاف من التجارب.",
+  "شايف نفسي شخص اجتماعي وبحب أكون قريب من الناس.",
+  "شايف نفسي شخص مختلف وبحب الإبداع والتفكير خارج المعتاد."
+ ],
+
+ ["calm","bold","social","creative"]
+]
+
+];
+
+
+const profiles={
+
+ calm:{
+  title:"العقل الهادي",
+  icon:"☾",
+  text:"أنت شخص بتحب التفكير قبل التصرف، وبتحاول تحافظ على هدوئك حتى لما الدنيا تضغط عليك."
+ },
+
+ bold:{
+  title:"الشخص الجريء",
+  icon:"◆",
+  text:"أنت بتحب الحركة والتحديات، وغالباً مش بتستنى كتير قبل ما تبدأ وتاخد خطوة."
+ },
+
+ social:{
+  title:"الشخص الاجتماعي",
+  icon:"✦",
+  text:"الناس والعلاقات جزء مهم من شخصيتك، وبتحب التواصل ومشاركة اللي حواليك."
+ },
+
+ creative:{
+  title:"العقل المبدع",
+  icon:"◇",
+  text:"عندك طريقة مختلفة في التفكير، وبتحب الأفكار الجديدة وتجربة طرق مش تقليدية."
+ }
+
+};
+
+
+let current=0;
+let player="";
+
+let scores={
+ calm:0,
+ bold:0,
+ social:0,
+ creative:0
+};
+
+
+let audioCtx=null;
+let sound=true;
+let musicTimer=null;
+
+
+function audio(){
+
+ if(!audioCtx)
+  audioCtx=
+   new (window.AudioContext||window.webkitAudioContext)();
+
+}
+
+
+function tone(
+ freq,
+ duration=.08,
+ type="sine",
+ volume=.035
+){
+
+ if(!sound)return;
+
+ audio();
+
+ const o=
+  audioCtx.createOscillator();
+
+ const g=
+  audioCtx.createGain();
+
+ o.type=type;
+
+ o.frequency.value=freq;
+
+ g.gain.setValueAtTime(
+  volume,
+  audioCtx.currentTime
+ );
+
+ g.gain.exponentialRampToValueAtTime(
+  .001,
+  audioCtx.currentTime+duration
+ );
+
+ o.connect(g);
+ g.connect(audioCtx.destination);
+
+ o.start();
+
+ o.stop(
+  audioCtx.currentTime+duration
+ );
+
+}
+
+
+function clickSound(){
+
+ tone(
+  420,
+  .06,
+  "sine",
+  .025
+ );
+
+}
+
+
+function nextSound(){
+
+ tone(
+  520,
+  .07,
+  "sine",
+  .025
+ );
+
+ setTimeout(
+  ()=>tone(
+   680,
+   .08,
+   "sine",
+   .02
+  ),
+  60
+ );
+
+}
+
+
+function resultSound(){
+
+ tone(
+  392,
+  .15,
+  "sine",
+  .03
+ );
+
+ setTimeout(
+  ()=>tone(
+   523,
+   .18,
+   "sine",
+   .025
+  ),
+  120
+ );
+
+ setTimeout(
+  ()=>tone(
+   659,
+   .25,
+   "sine",
+   .02
+  ),
+  250
+ );
+
+}
+
+
+function startMusic(){
+
+ if(!sound || musicTimer)return;
+
+ audio();
+
+ const notes=[
+  261.63,
+  329.63,
+  392,
+  329.63,
+  293.66,
+  349.23,
+  440,
+  349.23
+ ];
+
+ let i=0;
+
+ musicTimer=setInterval(()=>{
+
+  tone(
+   notes[i%notes.length],
+   .55,
+   "sine",
+   .008
+  );
+
+  i++;
+
+ },650);
+
+}
+
+
+function stopMusic(){
+
+ if(musicTimer){
+
+  clearInterval(musicTimer);
+
+  musicTimer=null;
+
+ }
+
+}
+
+
+function toggleSound(){
+
+ sound=!sound;
+
+ document.getElementById(
+  "soundBtn"
+ ).textContent=
+  sound
+   ? "🔊 الصوت"
+   : "🔇 الصوت";
+
+ if(sound)
+  startMusic();
+ else
+  stopMusic();
+
+}
+
+
+document.getElementById(
+ "soundBtn"
+).onclick=toggleSound;
+
+
+function showScreen(id){
+
+ document
+  .querySelectorAll(".screen")
+  .forEach(
+   x=>x.classList.remove("active")
+  );
+
+ document
+  .getElementById(id)
+  .classList.add("active");
+
+ window.scrollTo(0,0);
+}
+
+
+function startGame(){
+
+ player=
+  document
+   .getElementById("nameInput")
+   .value
+   .trim();
+
+ if(!player){
+
+  document
+   .getElementById("nameInput")
+   .focus();
+
+  return;
+
+ }
+
+ audio();
+
+ if(
+  audioCtx.state==="suspended"
+ )
+  audioCtx.resume();
+
+ startMusic();
+
+ current=0;
+
+ scores={
+  calm:0,
+  bold:0,
+  social:0,
+  creative:0
+ };
+
+ document
+  .getElementById("playerLabel")
+  .textContent=
+  player;
+
+ showScreen("quiz");
+
+ showQuestion();
+
+}
+
+
+function showQuestion(){
+
+ const q=
+  questions[current];
+
+ document
+  .getElementById("questionNumber")
+  .textContent=
+  `السؤال ${current+1} من ${questions.length}`;
+
+ document
+  .getElementById("progressBar")
+  .style.width=
+  ((current/questions.length)*100)+"%";
+
+ document
+  .getElementById("questionText")
+  .textContent=
+  q[0];
+
+ const box=
+  document.getElementById("answers");
+
+ box.innerHTML="";
+
+ q[1].forEach(
+  (answer,i)=>{
+
+   const b=
+    document.createElement("button");
+
+   b.className="answer";
+
+   b.textContent=answer;
+
+   b.onclick=
+    ()=>chooseAnswer(q[2][i]);
+
+   box.appendChild(b);
+
+  }
+ );
+
+}
+
+
+function chooseAnswer(type){
+
+ clickSound();
+
+ scores[type]++;
+
+ current++;
+
+ if(
+  current<questions.length
+ ){
+
+  nextSound();
+
+  showQuestion();
+
+ }else{
+
+  showResult();
+
+ }
+
+}
+
+
+function showResult(){
+
+ let winner="calm";
+
+ Object
+  .keys(scores)
+  .forEach(type=>{
+
+   if(
+    scores[type]>scores[winner]
+   )
+    winner=type;
+
+  });
+
+ const p=
+  profiles[winner];
+
+ document
+  .getElementById("resultIcon")
+  .textContent=
+  p.icon;
+
+ document
+  .getElementById("resultTitle")
+  .textContent=
+  `${player} — ${p.title}`;
+
+ document
+  .getElementById("resultText")
+  .textContent=
+  p.text;
+
+ document
+  .getElementById("score")
+  .textContent=
+  `أجبت ${scores[winner]} إجابات تميل لهذا النوع`;
+
+ document
+  .getElementById("progressBar")
+  .style.width="100%";
+
+ showScreen("result");
+
+ resultSound();
+
+}
+
+
+function restartGame(){
+
+ clickSound();
+
+ stopMusic();
+
+ showScreen("start");
+
+ document
+  .getElementById("nameInput")
+  .value="";
+
+}
+
+
+function showPrivacy(){
+
+ document
+  .getElementById("privacyModal")
+  .classList.add("show");
+
+}
+
+
+function closePrivacy(){
+
+ document
+  .getElementById("privacyModal")
+  .classList.remove("show");
+
+}
+
+
+document
+ .getElementById("privacyModal")
+ .onclick=e=>{
+
+  if(
+   e.target.id==="privacyModal"
+  )
+   closePrivacy();
+
+ };
+
+
+document
+ .getElementById("nameInput")
+ .addEventListener(
+  "keydown",
+  e=>{
+
+   if(e.key==="Enter")
+    startGame();
+
+  }
+ );
+
+</script>
+
+</body>
+</html>
